@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
 
-DateFormat dateFormat=DateFormat.yMEd();
+DateFormat dateFormat=DateFormat.yMMMEd();
 
 

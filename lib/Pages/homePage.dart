@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:newsapi/Models/newsModel.dart';
 import 'package:newsapi/Pages/body.dart';
 import 'package:newsapi/Services/ApiService.dart';
-import 'package:newsapi/Widgets/newsCard.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -14,9 +13,21 @@ class _HomePageState extends State<HomePage> {
 
   late Future<NewsModel?>getData;
 
+  void fetchData(){
+    setState(() {
+      getData=NewsApiService().fetchingApi();
+    });
+  }
+
+
+  Future _onRefresh()async{
+    await Future.delayed(Duration(seconds: 3));
+    fetchData();
+  }
+
   @override
   void initState() {
-   getData=NewsApiService().fetchingApi();
+    fetchData();
     super.initState();
   }
 
@@ -29,16 +40,19 @@ class _HomePageState extends State<HomePage> {
         title: Text("NewsApp"),
       ),
 
-      body:  FutureBuilder<NewsModel?>(
-          future: getData,
-          builder: (context,snapshot){
-        if(snapshot.hasData){
-          final data=snapshot.data!;
+      body:  RefreshIndicator(
+        onRefresh: _onRefresh,
+        child: FutureBuilder<NewsModel?>(
+            future: getData,
+            builder: (context,snapshot){
+          if(snapshot.hasData){
+            final data=snapshot.data!;
 
-          return Body(newsModel:data);
-        }
-        return Center(child:CircularProgressIndicator(),);
-      }),
+            return Body(newsModel:data);
+          }
+          return Center(child:CircularProgressIndicator(),);
+        }),
+      ),
 
     );
   }

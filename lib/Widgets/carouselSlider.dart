@@ -23,7 +23,7 @@ carouselSlider(NewsModel newsModel){
               width: double.infinity,
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(6),
-                  child: Image.network(data.urlToImage!,fit: BoxFit.cover,))),
+                  child: Image.network(data.urlToImage!=null?data.urlToImage!:"",fit: BoxFit.cover,))),
         );
       },
       options: CarouselOptions(

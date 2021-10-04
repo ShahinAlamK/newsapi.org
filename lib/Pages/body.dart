@@ -24,19 +24,24 @@ class _BodyState extends State<Body> {
 
         SizedBox(height: 10,),
 
-        Text("Category"),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text("Category",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+        ),
         Container(
-          height: 80,
+          height:80,
           width: size.width,
           decoration: BoxDecoration(
             color: Colors.grey
           ),
         ),
 
+
+        SizedBox(height: 10,),
         ListView.builder(
           shrinkWrap: true,
           physics: BouncingScrollPhysics(),
-          itemCount:widget.newsModel!.articles!.length.clamp(5,20),
+          itemCount:widget.newsModel!.articles!.length.clamp(5,40),
             itemBuilder: (context,index){
           return NewsCardView(widget.newsModel!.articles![index]);
         })

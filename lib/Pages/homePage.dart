@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newsapi/Models/newsModel.dart';
 import 'package:newsapi/Pages/body.dart';
 import 'package:newsapi/Services/ApiService.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -11,48 +12,30 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  late Future<NewsModel?>getData;
-
-  void fetchData(){
-    setState(() {
-      getData=NewsApiService().fetchingApi();
-    });
-  }
-
-
-  Future _onRefresh()async{
-    await Future.delayed(Duration(seconds: 3));
-    fetchData();
-  }
-
-  @override
-  void initState() {
-    fetchData();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
+        leading: Icon(Icons.menu),
         elevation: 0,
         centerTitle: true,
-        title: Text("NewsApp"),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text("Global",style: TextStyle(color: Colors.blue),),
+            SizedBox(width: 7,),
+            Text("News",style: TextStyle(color: Colors.deepOrange),),
+          ],
+        ),
+        actions: [
+          Icon(Icons.search,size: 30,),
+          SizedBox(width: 7,),
+        ],
       ),
 
-      body:  RefreshIndicator(
-        onRefresh: _onRefresh,
-        child: FutureBuilder<NewsModel?>(
-            future: getData,
-            builder: (context,snapshot){
-          if(snapshot.hasData){
-            final data=snapshot.data!;
-
-            return Body(newsModel:data);
-          }
-          return Center(child:CircularProgressIndicator(),);
-        }),
-      ),
+      body:Body(),
 
     );
   }
